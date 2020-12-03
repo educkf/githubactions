@@ -34,7 +34,7 @@ jobs:
           HOST: ${{ secrets.HOST }}
           USERNAME: ${{ secrets.USERNAME }}
           PORT: ${{ secrets.PORT }}
-          PASSWORD: ${{ secrets.PASSWORD }}
+          KEY: ${{ secrets.SSHKEY }}
         with:
           source: ./dist
           target: /var/www/html/${{ secrets.PROJECT }}
@@ -46,7 +46,7 @@ jobs:
           HOST: ${{ secrets.HOST }}
           USERNAME: ${{ secrets.USERNAME }}
           PORT: ${{ secrets.PORT }}
-          PASSWORD: ${{ secrets.PASSWORD }}
+          KEY: ${{ secrets.SSHKEY }}
           script: |
             cd /var/www/html/${{ secrets.PROJECT }}
             git pull origin master
