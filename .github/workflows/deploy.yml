@@ -6,47 +6,48 @@ on:
     - master
 
 jobs:
-    build-deploy:
-        runs-on: ubuntu-latest
+  build-deploy:
+      runs-on: ubuntu-latest
 
-        steps:
-        - uses: actions/checkout@master
+      steps:
+      - uses: actions/checkout@master
 
-        - name: Setup Node
-            uses: actions/setup-node@v1
-            with:
-                node-version: '10.x'
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
 
-        - name: Cache dependencies
-            uses: actions/cache@v1
-            with:
-                path: ~/.npm
-                key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-                restore-keys: |
-                ${{ runner.os }}-node-
-        - run: npm ci
-        - run: npm run generate
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-        - name: Deploy website to digital ocean
-            uses: appleboy/scp-action@master
-            env:
-                HOST: ${{ secrets.HOST }}
-                USERNAME: ${{ secrets.USERNAME }}
-                PORT: ${{ secrets.PORT }}
-                PASSWORD: ${{ secrets.PASSWORD }}
-            with:
-                source: ./dist
-                target: /var/www/html/${{ secrets.PROJECT }}
-                strip_components: 1
+      - run: npm ci
+      - run: npm run generate
 
-        - name: Start Server
-            uses: appleboy/ssh-action@master
-            with:
-                HOST: ${{ secrets.HOST }}
-                USERNAME: ${{ secrets.USERNAME }}
-                PORT: ${{ secrets.PORT }}
-                PASSWORD: ${{ secrets.PASSWORD }}
-                script: |
-                    cd /var/www/html/${{ secrets.PROJECT }}
-                    git pull origin master
-                    pm2 reload ${{ secrets.PROJECT_URL }}
+      - name: Deploy website to digital ocean
+        uses: appleboy/scp-action@master
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+        with:
+          source: ./dist
+          target: /var/www/html/${{ secrets.PROJECT }}
+          strip_components: 1
+
+      - name: Start Server
+        uses: appleboy/ssh-action@master
+        with:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          script: |
+            cd /var/www/html/${{ secrets.PROJECT }}
+            git pull origin master
+            pm2 reload ${{ secrets.PROJECT_URL }}
