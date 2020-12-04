@@ -49,5 +49,4 @@ jobs:
           KEY: ${{ secrets.SSHKEY }}
           script: |
             cd /var/www/html/${{ secrets.PROJECT }}
-            npm install
-            pm2 start
+            pm2 reload ${{ secrets.PROJECT }}.eckf.pw
