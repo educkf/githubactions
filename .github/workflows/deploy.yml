@@ -36,7 +36,7 @@ jobs:
           PORT: ${{ secrets.PORT }}
           KEY: ${{ secrets.SSHKEY }}
         with:
-          source: "./.nuxt,./dist,./nuxt.config.js,./package.json,./static"
+          source: "./.nuxt,./dist,./nuxt.config.js,./package.json,./static,./ecosystem.config.js"
           target: /var/www/html/${{ secrets.PROJECT }}
           strip_components: 1
 
@@ -50,4 +50,4 @@ jobs:
           script: |
             cd /var/www/html/${{ secrets.PROJECT }}
             npm install
-            pm2 reload ${{ secrets.PROJECT_URL }}
+            pm2 start
