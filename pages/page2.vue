@@ -3,9 +3,9 @@
     <div>
       <logo />
       <h1 class="title">
-        Github Actions D.O. test
+        Github Actions D.O. - Page 2
       </h1>
-      <nuxt-link to="/page2">Page 2</nuxt-link>
+      <nuxt-link to="/">Index</nuxt-link>
     </div>
   </div>
 </template>
